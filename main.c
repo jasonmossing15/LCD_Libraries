@@ -17,5 +17,9 @@ int main(void) {
     initLCD();
     clearLCD();
 
+    while(1){
+
+    }
+
 	return 0;
 }

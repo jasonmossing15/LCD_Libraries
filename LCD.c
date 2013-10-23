@@ -72,15 +72,17 @@ void writeChar(char char2Write){
 }
 
 void set_SS_lo(){
-	P2OUT |= BIT1;
+	P2OUT &= ~BIT1;
 }
 
 void set_SS_hi(){
-	P2OUT &= ~BIT1;
+	P2OUT |= BIT1;
 }
 
 void initLCD()
 {
+	set_SS_hi();
+
     writeCommandNibble(0x03);
 
     writeCommandNibble(0x03);
