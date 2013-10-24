@@ -17,8 +17,8 @@ int main(void) {
     initLCD();
     clearLCD();
 
-    char* string1 = "ECE382 is my favorite class! #";
-    char* string2 = "Here is line2! #";
+    char* string1 = "ECE382 is my favorite class! ";
+    char* string2 = "Here is line2! ";
     scrollString(string1, string2);
 
     while(1){

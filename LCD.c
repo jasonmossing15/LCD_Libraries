@@ -54,6 +54,7 @@ void initSPI(){
 }
 
 void line1Cursor(){
+	//0x02 is the set cursor to home command
 	writeCommandByte(0x02);
 
 }
@@ -63,45 +64,42 @@ void line2Cursor(){
 	//moves the cursor to the right 40 times so it is on line 2 (2x40 screen)
 	int i;
 	for(i = 0; i < 40; i++){
+		//0x14 is the shift the cursor to the right command
 		writeCommandByte(0x14);
 	}
 }
 
-//This isnt working 100% yet... :(
 void scrollString(char* line1strg, char* line2strg){
 	char* string1 = line1strg;
 	char* string2 = line2strg;
 
-	// will be used for B and A functionality.
-	char test1 = 1;
-	char test2 = 1;
-
-	while(test1|test2){
+	while(1){
 
 	line1Cursor();
 	writeString(string1);
-
-	__delay_cycles(42);
 
 	line2Cursor();
 	writeString(string2);
 
 	string1++;
-	//This wont catch the end of the string.
-	if(*string1 == '#'){
+	//there is a 0 (null) at the end of the string
+	//this sees the null and resets the string.
+	if(*string1 == 0){
 		string1 = line1strg;
 		}
+
 	string2++;
-	//This wont catch the end of the string.
-	if(*string2 == '#'){
+		if(*string2 == 0){
 		string2 = line2strg;
 	}
+		//delays the next shift by 100ms
+    __delay_cycles(102000);
 	}
 }
 
 void writeString(char* strg2Write){
-	//assumes # ends the string
-	while(*strg2Write != '#'){
+	//goes to the null character at the end of the pointer
+	while(*strg2Write != 0){
 		writeChar(*strg2Write);
 		strg2Write++;
 	}
