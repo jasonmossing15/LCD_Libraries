@@ -17,6 +17,9 @@ int main(void) {
     initLCD();
     clearLCD();
 
+    line2Cursor();
+    writeString("Hello World#");
+
     while(1){
 
     }

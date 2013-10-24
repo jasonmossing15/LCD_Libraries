@@ -11,6 +11,8 @@
 
 char LCDCON = 0;
 
+//initialize all of the implementation only functions
+
 void writeCommandNibble(char commandNibble);
 
 void writeCommandByte(char commandByte);
@@ -52,23 +54,38 @@ void initSPI(){
 }
 
 void line1Cursor(){
-
+	writeCommandByte(0x02);
+	writeCommandByte(0x0F);
 }
 
 void line2Cursor(){
-
+	writeCommandByte(0x02);
+	writeCommandByte(0x0F);
+	//moves the cursor to the right 40 times so it is on line 2 (2x40 screen)
+	int i;
+	for(i = 0; i < 40; i++){
+		writeCommandByte(0x14);
+	}
 }
 
 void scrollString(char* line1strg, char* line2strg){
+	line1Cursor();
+	writeString(line1strg);
 
+	line2Cursor();
+	writeString(line2strg);
 }
 
 void writeString(char* strg2Write){
-
+	//assumes # ends the string
+	while(*strg2Write != '#'){
+		writeChar(*strg2Write);
+		strg2Write++;
+	}
 }
 
 void writeChar(char char2Write){
-
+	writeDataByte(char2Write);
 }
 
 void set_SS_lo(){
@@ -125,7 +142,7 @@ void writeDataByte(char dataByte)
 {
     LCDCON |= RS_MASK;
     LCD_write_8(dataByte);
-    __delay_cycles(1698);
+    __delay_cycles(42);
 }
 
 void LCD_write_8(char byteToSend)
@@ -151,7 +168,8 @@ void LCD_write_4(char byteToSend)
 
     sendByte &= 0x0F;
 
-    LCDCON |= RS_MASK;
+    //Thanks to Coastie Ryan Hub I got this line!
+    sendByte |= LCDCON;
 
     sendByte &= 0x7F;
 
