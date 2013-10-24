@@ -17,8 +17,9 @@ int main(void) {
     initLCD();
     clearLCD();
 
-    line2Cursor();
-    writeString("Hello World#");
+    char* string1 = "ECE382 is my favorite class! #";
+    char* string2 = "Here is line2! #";
+    scrollString(string1, string2);
 
     while(1){
 
