@@ -19,7 +19,9 @@ void line1Cursor();
 
 void line2Cursor();
 
-void scrollString(char* line1strg, char* line2strg);
+void scrollString(char string1[], char string2[]);
+
+char* rotateString(char string[]);
 
 void writeString(char* strg2Write);
 
