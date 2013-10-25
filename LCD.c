@@ -17,6 +17,8 @@ void writeCommandNibble(char commandNibble);
 
 void writeCommandByte(char commandByte);
 
+int getStringLength(char* string);
+
 void writeDataByte(char dataByte);
 
 void LCD_write_8(char byteToSend);
@@ -69,9 +71,7 @@ void line2Cursor(){
 	}
 }
 
-void scrollString(char* line1strg, char* line2strg){
-	char* string1 = line1strg;
-	char* string2 = line2strg;
+void scrollString(char string1[], char string2[]){
 
 	while(1){
 
@@ -81,7 +81,10 @@ void scrollString(char* line1strg, char* line2strg){
 	line2Cursor();
 	writeString(string2);
 
-	string1++;
+	string1 = rotateString(string1);
+	string2 = rotateString(string2);
+
+	/*string1++;
 	//there is a 0 (null) at the end of the string
 	//this sees the null and resets the string.
 	if(*string1 == 0){
@@ -91,10 +94,23 @@ void scrollString(char* line1strg, char* line2strg){
 	string2++;
 		if(*string2 == 0){
 		string2 = line2strg;
-	}
+	}*/
 		//delays the next shift by 100ms
     __delay_cycles(102000);
 	}
+}
+
+char* rotateString(char string[]){
+	int length = getStringLength(string);
+	char last = string[0];
+	int i;
+	for(i = 0; i<length-1; i++){
+		string[i] = string[i+1];
+	}
+	string[length-1] = last;
+
+	return string;
+
 }
 
 void writeString(char* strg2Write){
@@ -229,4 +245,11 @@ void SPI_send(char byteToSend)
     set_SS_hi();
 }
 
-
+int getStringLength(char* string){
+	int count = 0;
+	while(*string != 0){
+		count ++;
+		string++;
+	}
+	return count;
+}

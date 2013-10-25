@@ -7,7 +7,7 @@
 
 #include <msp430.h> 
 #include "LCD.h"
-#include "button.h"
+#include "buttons/button.h"
 
 /*
  * main.c
@@ -19,8 +19,7 @@ int main(void) {
     initLCD();
     clearLCD();
     configureP2PinAsButton(BIT3|BIT4|BIT5);
-    char* string1 = "ECE382 is my favorite class! ";
-    char* string2;
+    char string0[] = "ECE382 is my favorite class! ";
 
     writeString("Message?");
     line2Cursor();
@@ -30,19 +29,20 @@ int main(void) {
     char pressedButton = pollP2Buttons(buttons, 3);
 
     if(pressedButton == BIT3){
-    	string2 = "You pressed button 1. ";
+    	char string1 = "You pressed button 1. ";
     	waitForP2ButtonRelease(BIT3);
+        scrollString(string0, string1);
     }
     else if(pressedButton == BIT4){
-    	string2 = "You pressed button 2. ";
+    	char string2[] = "You pressed button 2. ";
     	waitForP2ButtonRelease(BIT4);
+        scrollString(string0, string2);
     }
     else{
-    	string2 = "You pressed button 3. ";
+    	char string3 []= "You pressed button 3. ";
     	waitForP2ButtonRelease(BIT5);
+        scrollString(string0, string3);
     }
-
-    scrollString(string1, string2);
 
     //traps cpu
     while(1){
